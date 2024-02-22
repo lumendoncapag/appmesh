@@ -59,6 +59,33 @@ resource "aws_ecs_service" "musicbox" {
   }
 }
 
+resource "aws_ecs_service" "musicbox_virtualgateway" {
+  name                               = "musicbox-vg"
+  cluster                            = var.ecs_cluster_name
+  task_definition                    = aws_ecs_task_definition.musicboxapp_vg.arn
+  desired_count                      = 1
+  deployment_minimum_healthy_percent = 100
+  deployment_maximum_percent         = 200
+  launch_type                        = "FARGATE"
+  network_configuration {
+    subnets          = var.subnets
+    security_groups  = var.sg_fe
+    assign_public_ip = true
+  }
+  service_registries {
+    registry_arn = aws_service_discovery_service.musicbox_vg.arn
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.musicbox-tg_vg.arn
+    container_name   = "envoy"
+    container_port   = 80
+  }
+}
+
+
+
+
 
 
 

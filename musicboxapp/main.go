@@ -146,10 +146,10 @@ func getOperaArtists(request *http.Request) (string, error) {
 	return operaArtists, nil
 }
 
-type pingHandler struct{}
+type healthHandler struct{}
 
-func (h *pingHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	log.Println("ping requested, responding with HTTP 200")
+func (h *healthHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	log.Println("health requested, responding with HTTP 200")
 	writer.WriteHeader(http.StatusOK)
 }
 
@@ -174,6 +174,6 @@ func main() {
 
 	http.Handle("/flamenco", xray.Handler(xraySegmentNamer, &flamencoHandler{}))
 	http.Handle("/opera", xray.Handler(xraySegmentNamer, &operaHandler{}))
-	http.Handle("/ping", xray.Handler(xraySegmentNamer, &pingHandler{}))
+	http.Handle("/health", xray.Handler(xraySegmentNamer, &healthHandler{}))
 	log.Fatal(http.ListenAndServe(":"+getServerPort(), nil))
 }

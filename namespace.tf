@@ -42,3 +42,16 @@ resource "aws_service_discovery_service" "musicbox" {
     }
   }
 }
+
+resource "aws_service_discovery_service" "musicbox_vg" {
+  name = "musicbox-service-vg"
+
+  dns_config {
+    namespace_id = aws_service_discovery_private_dns_namespace.ecs.id
+
+    dns_records {
+      ttl  = 60
+      type = "A"
+    }
+  }
+}

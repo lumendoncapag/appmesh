@@ -30,7 +30,7 @@
           }
         ],
         "memoryReservation": 128,
-        "image": "pauloclouddev/${appname}app:latest",
+        "image": "058264531735.dkr.ecr.us-east-2.amazonaws.com/${appname}app:1.0",
         "essential": true,
         "name": "${appname}app"
       },

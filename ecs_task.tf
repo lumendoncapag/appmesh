@@ -29,6 +29,24 @@ data "template_file" "container_definitions_musicbox" {
   }
 }
 
+data "template_file" "container_definitions_musicbox_virtualgateway" {
+  template = file("./ecs-taskdefinition-virtualgateway.json")
+  vars = {
+    meshname     = var.mesh_name
+    virtualgateway  = "music-virtualgateway"
+  }
+}
+
+resource "aws_ecs_task_definition" "musicboxapp_vg" {
+  family             = "td-musicboxvirtualgateway"
+  execution_role_arn = "arn:aws:iam::058264531735:role/ecsTaskExecutionRole"
+  task_role_arn      = "arn:aws:iam::058264531735:role/ecsTaskRole"
+  #requires_compatibilities = ["FARGATE"]
+  network_mode          = "awsvpc"
+  cpu                   = 512
+  memory                = 1024
+  container_definitions = data.template_file.container_definitions_musicbox_virtualgateway.rendered
+}
 
 
 

@@ -13,7 +13,7 @@ resource "aws_appmesh_virtual_node" "flamenco-vn" {
 
       health_check {
         protocol            = "http"
-        path                = "/ping"
+        path                = "/health"
         healthy_threshold   = 2
         unhealthy_threshold = 2
         timeout_millis      = 2000
@@ -45,7 +45,7 @@ resource "aws_appmesh_virtual_node" "opera-vn" {
 
       health_check {
         protocol            = "http"
-        path                = "/ping"
+        path                = "/health"
         healthy_threshold   = 2
         unhealthy_threshold = 2
         timeout_millis      = 2000
@@ -71,13 +71,13 @@ resource "aws_appmesh_virtual_node" "musicbox-vn" {
   spec {
     listener {
       port_mapping {
-        port     = 80
+        port     = var.fe_port
         protocol = "http"
       }
 
       #   health_check {
       #     protocol            = "http"
-      #     path                = "/ping"
+      #     path                = "/health"
       #     healthy_threshold   = 2
       #     unhealthy_threshold = 2
       #     timeout_millis      = 2000

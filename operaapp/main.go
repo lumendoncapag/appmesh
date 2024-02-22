@@ -56,10 +56,10 @@ func (h *operaHandler) ServeHTTP(writer http.ResponseWriter, request *http.Reque
 	fmt.Fprint(writer, getArtists())
 }
 
-type pingHandler struct{}
+type healthHandler struct{}
 
-func (h *pingHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
-	log.Println("ping to opera-svc requested, responding with HTTP 200")
+func (h *healthHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+	log.Println("health to opera-svc requested, responding with HTTP 200")
 	writer.WriteHeader(http.StatusOK)
 }
 
@@ -67,6 +67,6 @@ func main() {
 	log.Println("starting server, listening on port " + getServerPort())
 	xraySegmentNamer := xray.NewFixedSegmentNamer(getXRAYAppName())
 	http.Handle("/", xray.Handler(xraySegmentNamer, &operaHandler{}))
-	http.Handle("/ping", xray.Handler(xraySegmentNamer, &pingHandler{}))
+	http.Handle("/health", xray.Handler(xraySegmentNamer, &healthHandler{}))
 	http.ListenAndServe(":"+getServerPort(), nil)
 }
