@@ -1,3 +1,14 @@
+################
+## BUILD APPS ##
+################
+
+resource "null_resource" "build" {
+
+ provisioner "local-exec" {
+    command = "/bin/bash build.sh ${var.tag}"
+  }
+}
+
 data "template_file" "container_definitions_flamenco" {
   template = file("./ecs-taskdefinition-be.json")
   vars = {

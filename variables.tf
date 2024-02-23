@@ -30,3 +30,7 @@ variable "sg_fe" {
 variable "fe_port" {
   default = "9000"
 }
+
+variable "tag"{
+  default = "1.0"
+}
